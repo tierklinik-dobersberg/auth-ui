@@ -6,7 +6,7 @@ export const environment = {
   production: false,
   redirectTld: "example.com",
   authServer: "http://auth.example.com:8080",
-  iamServer: "http://app.example.com:8090"
+  iamServer: "http://iam.example.com:8090"
 };
 
 /*

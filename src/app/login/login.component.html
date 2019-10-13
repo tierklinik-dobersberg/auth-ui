@@ -1,3 +1,8 @@
+<div class="signup-button">
+    <span>Noch kein Account?</span>
+    <button type="button" class="secondary">Anmelden</button>
+</div>
+            
 <div class="header">
     <h1>Login</h1>
     <p>Anmeldung zum internen Bereich der Tierklinik Dobersberg</p>
@@ -14,7 +19,14 @@
     </div>
     
     <div class="form-row">
-        <button type="submit" class="primary">Anmelden</button>
+        <button type="submit" class="primary" [disabled]="loading">
+            <ng-container *ngIf="!loading; else: loadIcon">
+                Anmelden
+            </ng-container>
+            <ng-template #loadIcon>
+                <i class="fa fa-spin fa-spinner"></i>
+            </ng-template>
+        </button>
     </div>
 
     <div class="form-row" class="error" [style.visibility]="error ? 'visible' : 'hidden'">

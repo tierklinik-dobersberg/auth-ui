@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import * as AuthN from 'keratin-authn';
-import { environment } from 'src/environments/environment';
-import { ActivatedRoute, Router } from '@angular/router';
+import { UserService } from '../user.service';
+import { finalize } from 'rxjs/operators';
 
 @Component({
   selector: 'app-login',
@@ -12,37 +11,24 @@ export class LoginComponent implements OnInit {
     username: string = '';
     password: string = '';
     error = false;
+    loading = false;
 
-    constructor(private _router: Router,
-                private _activeRoute: ActivatedRoute) {}
+    constructor(private _userService: UserService) {}
 
     ngOnInit() {
     }
 
     login() {
-        AuthN.login({
-            username: this.username,
-            password: this.password,
-        })
-        .then(() => {
-            this.error = false;
-            
-            if (this._activeRoute.snapshot.queryParamMap.has("redirect")) {
-                const target = this._activeRoute.snapshot.queryParamMap.get("redirect");
-                const url = new URL(target);
+        this.loading = true;
 
-                if (!url.hostname.endsWith(environment.redirectTld)) {
-                    throw new Error(`invalid redirection target: ${url.hostname}`);
+        this._userService.loginAndRedirect(this.username, this.password)
+            .pipe(finalize(() => this.loading = false))
+            .subscribe({
+                next: () => this.error = false,
+                error: err => {
+                    console.log(err);
+                    this.error = true;
                 }
-                
-                window.location.replace(target);
-            } else {
-                this._router.navigate(['profile']);
-            }
-        })
-        .catch((err) => {
-            console.log(`login failed`, err);
-            this.error = true;
-        });
+            })
     }
 }

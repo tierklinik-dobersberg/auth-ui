@@ -1,6 +1,97 @@
-<h1>Hallo {{name}},</h1>
-<p>Du bist derzeit im internen Bereich der Tierklink Dobersberg angemeldet.</p>
-<p>Klicke auf "<b>Abmelden</b>" um dich auf diesem Gerät abzumelden oder auf "<b>Profil bearbeiten</b>" wenn du deine persönlichen Daten anpassen möchtest.</p>
+<div class="welcome-screen" *ngIf="!(editMode | async); else: editProfileTemplate">
+    <h1>Hallo {{name}},</h1>
+    <p>Du bist derzeit im internen Bereich der Tierklink Dobersberg angemeldet.</p>
+    <p>Klicke auf "<b>Abmelden</b>" um dich auf diesem Gerät abzumelden oder auf "<b>Profil bearbeiten</b>" wenn du deine persönlichen Daten anpassen möchtest.</p>
 
-<button type="button" class="secondary">Profil bearbeiten</button>
-<button type="button" (click)="logout()" class="primary">Abmelden</button>
+    <button type="button" class="secondary" (click)="editProfile()">Profil bearbeiten</button>
+    <button type="button" (click)="logout()" class="primary">
+        <ng-container *ngIf="!logoutInProgress; else: loadIcon">
+            Abmelden
+        </ng-container>
+    </button>
+</div>
+
+<ng-template #editProfileTemplate>
+    <div class="edit-profile">
+        <h1>Profil</h1>
+        <p>
+            Hier kannst du deine persönlichen Daten bearbeiten. Bitte beachte dass Kontaktdaten und Adresses stimmen sollten da
+            es sonst zu Problemen bei der Rechnungslegung oder etwaigen Erinnerungen bzw Informationen kommen kann.
+        </p>
+        
+        <form (ngSubmit)="saveProfile()">
+        
+            <div class="flex-row">
+                <fieldset class="flex-grow">
+                    <legend>Allgemein</legend>
+                    
+                    <div class="form-row">
+                        <label for="firstname">Vorname</label>
+                        <input name="firstname" type="text" [(ngModel)]="editModel.firstname">
+                    </div>
+                    
+                    <div class="form-row">
+                        <label for="lastname">Nachname</label>
+                        <input name="lastname" type="text" [(ngModel)]="editModel.lastname">
+                    </div>
+                    
+                    <div class="form-row">
+                        <label for="job">Beruf</label>
+                        <input name="job" type="text" [(ngModel)]="editModel.job">
+                    </div>
+                    
+                </fieldset>
+                
+                <fieldset class="flex-grow">
+                    <legend>Kontaktdaten</legend>
+                    
+                    <div class="form-row">
+                        <label for="mail">E-Mail</label>
+                        <input name="mail" type="text" [(ngModel)]="editModel.email">
+                    </div>
+
+                    <div class="form-row">
+                        <label for="phone">Telefon</label>
+                        <input name="phone" type="text" [(ngModel)]="editModel.phone">
+                    </div>
+                </fieldset>
+            </div>
+
+            <fieldset>
+                <legend>Adresse</legend>
+                
+                <div class="form-row">
+                    <label for="">Straße</label>
+                    <input name="" type="text">
+                </div>
+                <div class="form-row flex-row">
+                    <span>
+                        <label for="">PLZ</label>
+                        <input name="" type="text">
+                    </span>
+                    <span class="flex-grow">
+                        <label for="">Ort</label>
+                        <input name="" type="text">
+                    </span>
+                </div>
+            </fieldset>
+            
+
+            <div class="action-button">
+                <button class="primary" type="submit">
+                    <ng-container *ngIf="!saveInProgress; else: loadIcon">
+                        Save
+                    </ng-container>
+                </button>
+                
+                <button class="secondary" type="button" (click)="abortEdit()">
+                    Abbrechen
+                </button>
+            </div>
+        </form>
+    </div>
+</ng-template>
+
+<ng-template #loadIcon>
+    <i class="fa fa-spin fa-spinner"></i>
+</ng-template>

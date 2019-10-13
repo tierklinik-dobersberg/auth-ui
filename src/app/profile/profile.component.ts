@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import * as AuthN from 'keratin-authn';
-import { Router } from '@angular/router';
-import { UserService } from '../user.service';
+import { Router, ActivatedRoute } from '@angular/router';
+import { UserService, User } from '../user.service';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-profile',
@@ -9,12 +11,26 @@ import { UserService } from '../user.service';
   styleUrls: ['./profile.component.scss']
 })
 export class ProfileComponent implements OnInit {
-    name: string = '';
+    name = '';
+    saveInProgress = false;
+    logoutInProgress = false;
+    
+    editMode: Observable<boolean>;
+
+    profile: User;
+    editModel: User;
 
     constructor(private _router: Router,
+                private _activeRoute: ActivatedRoute,
                 private _userService: UserService) { }
 
     ngOnInit() {
+        this.editMode = this._activeRoute.queryParamMap
+            .pipe(
+                map(params => params.get("edit")),
+                map(val => val !== null)
+            )
+
         if (this._userService.getAccountID() === null) {
             this._router.navigate(['/']);
         } else {
@@ -24,15 +40,43 @@ export class ProfileComponent implements OnInit {
                 } else {
                     this.name = user.username;
                 }
+
+                this.profile = user;
+                // we need to copy the model for editMode ASAP if
+                // we directly enter it via ?edit
+                this.editModel = {...user};
             });
         }
     }
 
     logout() {
+        this.logoutInProgress = true;
         AuthN.logout()
+            .then(() => {
+                this.logoutInProgress = false;
+            })
             .then(() => {
                 this._router.navigate(['/']);
             });
     }
 
+    editProfile() {
+        this.editModel = {...this.profile};
+        this._router.navigate([], {queryParams: {edit: ''}});
+    }
+
+    saveProfile() {
+        this.saveInProgress = true;
+        this._userService.saveProfile(this.editModel)
+            .subscribe(user => {
+                this.saveInProgress = false;
+                this.profile = user;
+                this.editModel = {...user};
+                this._router.navigate([]);
+            });
+    }
+    
+    abortEdit() {
+        this._router.navigate([]);
+    }
 }

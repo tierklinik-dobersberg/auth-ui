@@ -1,11 +1,12 @@
 /* You can add global styles to this file, and also import other style files */
+$default-font-size: 15px;
 body {
     padding: 0;
     margin: 0;
     
     font-family: "Inter";
     font-weight: 300;
-    font-size: 1rem;
+    font-size: $default-font-size;
 }
 
 input {
@@ -21,7 +22,7 @@ input {
 button {
     padding: 10px;
     font-weight: normal;
-    font-size: 1rem;
+    font-size: $default-font-size;
     font-family: Inter;
     border-radius: 2px;
     

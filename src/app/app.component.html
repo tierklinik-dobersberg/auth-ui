@@ -22,12 +22,10 @@
     </div>
     
     <div class="router-outlet-container">
-        <div *ngIf="accountID === null" class="signup-button">
-            <span>Noch kein Account?</span>
-            <button type="button" class="secondary">Anmelden</button>
-        </div>
+        
         <div class="router-outlet">
             <router-outlet></router-outlet>
         </div>
+    
     </div>
 </div>

@@ -2,7 +2,55 @@
     display: block;
 }
 
+.welcome-screen, .edit-profile {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.welcome-screen {
+    width: 500px;
+}
+
+.edit-profile {
+    width: 90%;
+}
+
+
 button {
     margin-top: 13px;
     width: 100%;
+}
+
+.form-row {
+    margin-bottom: 13px;
+}
+
+fieldset {
+    border: 1px solid rgba(0, 0, 0, 0.15);
+    border-radius: 3px;
+    padding: 13px;
+    margin-bottom: 21px;
+}
+
+.flex-row {
+    display: flex;
+    justify-content: space-between;
+    
+    span:first-of-type, fieldset:first-of-type {
+        margin-right: 21px;
+    }
+}
+
+.flex-grow {
+    flex-grow: 1;
+}
+
+.action-button {
+    display: flex;
+    justify-content: space-between;
+
+    button:first-of-type {
+        flex-grow: 1;
+        margin-right: 13px;
+    }
 }
