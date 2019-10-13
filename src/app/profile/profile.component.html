@@ -61,17 +61,17 @@
                 <legend>Adresse</legend>
                 
                 <div class="form-row">
-                    <label for="">Straße</label>
-                    <input name="" type="text">
+                    <label for="stree">Straße</label>
+                    <input name="stree" type="text" [(ngModel)]="editModel.street">
                 </div>
                 <div class="form-row flex-row">
                     <span>
-                        <label for="">PLZ</label>
-                        <input name="" type="text">
+                        <label for="cityCode">PLZ</label>
+                        <input name="cityCode" type="text" [(ngModel)]="editModel.cityCode">
                     </span>
                     <span class="flex-grow">
-                        <label for="">Ort</label>
-                        <input name="" type="text">
+                        <label for="city">Ort</label>
+                        <input name="city" type="text" [(ngModel)]="editModel.city">
                     </span>
                 </div>
             </fieldset>

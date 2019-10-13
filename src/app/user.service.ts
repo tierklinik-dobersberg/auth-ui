@@ -23,9 +23,12 @@ export interface User {
     firstname: string;
     job: string;
     email: string;
-    CreatedAt: string;
-    UpdatedAt: string;
-    DeletedAt: string | null;
+    street: string;
+    city: string;
+    cityCode: string;
+    createdAt: string;
+    updatedAt: string;
+    deletedAt: string | null;
 }
 
 @Injectable({
@@ -105,16 +108,23 @@ export class UserService implements HttpInterceptor {
             return source.pipe(tap(() => {
                 if (this._activeRoute.snapshot.queryParamMap.has("redirect")) {
                     const target = this._activeRoute.snapshot.queryParamMap.get("redirect");
-                    const url = new URL(target);
-    
-                    if (!url.hostname.endsWith(environment.redirectTld)) {
-                        throw new Error(`invalid redirection target: ${url.hostname}`);
+                    
+                    try {
+                        const url = new URL(target);
+        
+                        if (url.hostname.endsWith(environment.redirectTld)) {
+                            window.location.replace(target);
+                        }
+                    } catch (err) {
+                        console.error(`Failed to parse URL: ${err.toString()}`);
                     }
                     
-                    window.location.replace(target);
-                } else {
-                    this._router.navigate(['profile'], {preserveQueryParams: true});
+                    console.error(`Invalid redirection target!`);
+                    
+                    // fallthrough and navigate to the profile page
                 }
+                
+                this._router.navigate(['profile'], {preserveQueryParams: true});
             }))
         }
     }

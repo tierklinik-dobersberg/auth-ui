@@ -18,11 +18,12 @@ export class ProfileComponent implements OnInit {
     editMode: Observable<boolean>;
 
     profile: User;
-    editModel: User;
+    editModel: User = ({} as User); // required for first time load
 
     constructor(private _router: Router,
                 private _activeRoute: ActivatedRoute,
                 private _userService: UserService) { }
+                
 
     ngOnInit() {
         this.editMode = this._activeRoute.queryParamMap
