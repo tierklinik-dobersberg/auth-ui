@@ -1,0 +1,19 @@
+<div class="header">
+    <h1>Login</h1>
+    <p>Anmeldung zum internen Bereich der Tierklinik Dobersberg</p>
+</div>
+
+<form (ngSubmit)="login()">
+    <div class="form-row">
+        <span>Benutzername</span>
+        <input type="text" name="username" [(ngModel)]="username">
+    </div>
+    <div class="form-row">
+        <span>Password</span>
+        <input type="password" name="password" [(ngModel)]="password">
+    </div>
+    
+    <div class="form-row">
+        <button type="submit" class="primary">Anmelden</button>
+    </div>
+</form>
