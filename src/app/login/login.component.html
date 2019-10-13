@@ -16,4 +16,8 @@
     <div class="form-row">
         <button type="submit" class="primary">Anmelden</button>
     </div>
+
+    <div class="form-row" class="error" [style.visibility]="error ? 'visible' : 'hidden'">
+        Anmeldung fehlgeschlagen. Bitte überprüfen deinen Benutzernamen und dein Passwort.
+    </div>
 </form>

@@ -11,6 +11,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 export class LoginComponent implements OnInit {
     username: string = '';
     password: string = '';
+    error = false;
 
     constructor(private _router: Router,
                 private _activeRoute: ActivatedRoute) {}
@@ -24,6 +25,8 @@ export class LoginComponent implements OnInit {
             password: this.password,
         })
         .then(() => {
+            this.error = false;
+            
             if (this._activeRoute.snapshot.queryParamMap.has("redirect")) {
                 const target = this._activeRoute.snapshot.queryParamMap.get("redirect");
                 const url = new URL(target);
@@ -39,6 +42,7 @@ export class LoginComponent implements OnInit {
         })
         .catch((err) => {
             console.log(`login failed`, err);
+            this.error = true;
         });
     }
 }
