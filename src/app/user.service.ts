@@ -76,7 +76,7 @@ export class UserService implements HttpInterceptor {
     
     loginAndRedirect(username: string, password: string): Observable<number> {
         return this.login(username, password)
-            .pipe(this._redirect())
+            .pipe(this.mayRedirect())
     }
 
     importSession(): Observable<number> {
@@ -88,7 +88,7 @@ export class UserService implements HttpInterceptor {
     
     importSessionAndRedirect(): Observable<number> {
         return this.importSession()
-            .pipe(this._redirect())
+            .pipe(this.mayRedirect())
     }
 
     intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
@@ -103,7 +103,7 @@ export class UserService implements HttpInterceptor {
         return next.handle(req);
     }
     
-    private _redirect<T>(): OperatorFunction<T, T> {
+    private mayRedirect<T>(): OperatorFunction<T, T> {
         return (source: Observable<T>) => {
             return source.pipe(tap(() => {
                 if (this._activeRoute.snapshot.queryParamMap.has("redirect")) {
